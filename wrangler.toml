@@ -1,0 +1,9 @@
+name = "feedback-tracker"
+compatibility_date = "2026-02-01"
+pages_build_output_dir = "./dist"
+
+[env.production]
+vars = { VITE_API_URL = "https://feedback-tracker-api.<subdomain>.workers.dev" }
+
+[env.preview]
+vars = { VITE_API_URL = "https://feedback-tracker-api-preview.<subdomain>.workers.dev" }

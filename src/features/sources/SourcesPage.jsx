@@ -81,7 +81,8 @@ export const SourcesPage = () => {
     setSearchParams(nextParams, { replace: true });
   }, [searchParams, setSearchParams, sourceInfo.key]);
 
-  const { data: items = [] } = useFeedbackItemsQuery({ sourceType: sourceInfo.key });
+  const { data } = useFeedbackItemsQuery({ sourceType: sourceInfo.key });
+  const items = data?.items ?? [];
 
   const statusData = useMemo(() => {
     const counts = items.reduce((acc, item) => {

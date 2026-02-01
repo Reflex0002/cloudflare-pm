@@ -1,5 +1,5 @@
-import { mockTags } from "./mockTags";
-import { mockUsers } from "./mockUsers";
+import { mockTags } from "./mockTags.js";
+import { mockUsers } from "./mockUsers.js";
 
 const sourceTypes = ["SUPPORT", "DISCORD", "GITHUB", "EMAIL", "X", "FORUM"];
 const sourceLabels = {

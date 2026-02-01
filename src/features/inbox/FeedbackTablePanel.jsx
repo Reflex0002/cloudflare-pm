@@ -28,7 +28,8 @@ export const FeedbackTablePanel = ({ selectedId, onSelect }) => {
     [searchParams]
   );
 
-  const { data = [], isLoading } = useFeedbackItemsQuery(filters);
+  const { data, isLoading } = useFeedbackItemsQuery(filters);
+  const items = data?.items ?? [];
 
   const updateParam = (key, value) => {
     const nextParams = new URLSearchParams(searchParams);
@@ -54,12 +55,12 @@ export const FeedbackTablePanel = ({ selectedId, onSelect }) => {
           </Button>
         </div>
         <div className="inbox-toolbar__group">
-          <Dropdown onChange={(event) => updateParam("sort", event.target.value)}>
+          <Dropdown onChange={(event) => updateParam("sortBy", event.target.value)}>
             <option value="">Sort: Recent</option>
             <option value="createdAt">Created</option>
             <option value="priority">Priority</option>
             <option value="status">Status</option>
-            <option value="sourceLabel">Source</option>
+            <option value="sourceType">Source</option>
           </Dropdown>
           <Button variant="ghost">Bulk actions</Button>
         </div>
@@ -109,12 +110,12 @@ export const FeedbackTablePanel = ({ selectedId, onSelect }) => {
             <Skeleton key={index} style={{ height: 48 }} />
           ))}
         </div>
-      ) : data.length === 0 ? (
+      ) : items.length === 0 ? (
         <div style={{ color: "var(--color-white-muted)" }}>
           No feedback items match the current filters.
         </div>
       ) : (
-        <FeedbackTable data={data} selectedId={selectedId} onSelect={onSelect} />
+        <FeedbackTable data={items} selectedId={selectedId} onSelect={onSelect} />
       )}
 
     </section>
