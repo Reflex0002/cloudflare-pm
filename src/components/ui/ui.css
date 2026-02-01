@@ -1,0 +1,125 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 8px 14px;
+  background: var(--color-tertiary-dark);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.ui-button:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+.ui-button--primary {
+  background: var(--color-orange);
+  color: #181818;
+}
+
+.ui-button--secondary {
+  background: var(--color-secondary-dark);
+  border-color: var(--color-tertiary-dark);
+}
+
+.ui-button--ghost {
+  background: transparent;
+  border-color: var(--color-tertiary-dark);
+}
+
+.ui-card {
+  background: var(--color-secondary-dark);
+  border: 1px solid var(--color-tertiary-dark);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--color-tertiary-dark);
+  color: var(--color-white-muted);
+}
+
+.ui-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--color-tertiary-dark);
+  color: var(--color-white);
+  border: 1px solid transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ui-dropdown {
+  background: var(--color-tertiary-dark);
+  color: var(--color-white);
+  border: 1px solid var(--color-secondary-dark);
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.ui-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-tertiary-dark);
+  border-radius: 8px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+}
+
+.ui-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-white);
+}
+
+.ui-filter-drawer {
+  position: fixed;
+  right: 16px;
+  top: 80px;
+  width: 320px;
+  background: var(--color-secondary-dark);
+  border: 1px solid var(--color-tertiary-dark);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  z-index: 20;
+}
+
+.ui-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-secondary-dark) 25%,
+    var(--color-tertiary-dark) 45%,
+    var(--color-secondary-dark) 65%
+  );
+  background-size: 200% 100%;
+  border-radius: 8px;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

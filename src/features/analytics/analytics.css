@@ -1,0 +1,76 @@
+.analytics-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.analytics-card {
+  display: grid;
+  gap: 12px;
+}
+
+.analytics-kpi {
+  display: grid;
+  gap: 8px;
+}
+
+.analytics-kpi__value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.chatbot-panel {
+  display: grid;
+  gap: 12px;
+  height: 100%;
+}
+
+.chatbot-messages {
+  display: grid;
+  gap: 8px;
+}
+
+.chatbot-bubble {
+  background: var(--color-tertiary-dark);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.chatbot-input {
+  display: grid;
+  gap: 6px;
+}
+
+.chatbot-input input {
+  background: var(--color-tertiary-dark);
+  border: 1px solid var(--color-secondary-dark);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--color-white);
+}
+
+.analytics-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.analytics-card.analytics-card--compact {
+  padding: 12px;
+}
+
+@media (max-width: 1000px) {
+  .analytics-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,18 @@
+export const mockTags = [
+  "auth",
+  "billing",
+  "performance",
+  "latency",
+  "dashboard",
+  "api",
+  "security",
+  "ux",
+  "usability",
+  "docs",
+  "alerts",
+  "analytics",
+  "integrations",
+  "mobile",
+  "edge",
+  "dns",
+];

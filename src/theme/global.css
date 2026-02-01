@@ -1,0 +1,66 @@
+:root {
+  color-scheme: dark;
+  --color-primary-dark: #181818;
+  --color-secondary-dark: #1d1d1d;
+  --color-tertiary-dark: #272727;
+  --color-orange: #f68220;
+  --color-white: #f2f2f2;
+  --color-white-muted: #b6b6b6;
+  --color-blue: #82b6ff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-primary-dark);
+  color: var(--color-white);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--color-primary-dark);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--color-tertiary-dark);
+  border-radius: 999px;
+}
+
+body {
+  scrollbar-color: var(--color-tertiary-dark) var(--color-primary-dark);
+  scrollbar-width: thin;
+}
+
+a {
+  color: var(--color-blue);
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+}

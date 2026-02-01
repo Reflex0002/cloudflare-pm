@@ -1,0 +1,24 @@
+.sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.sources-card {
+  display: grid;
+  gap: 12px;
+}
+
+.sources-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.sources-highlight {
+  background: var(--color-tertiary-dark);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+}
