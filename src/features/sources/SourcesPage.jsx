@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip } from "recharts";
 import { Card } from "../../components/ui/Card";
-import { Dropdown } from "../../components/ui/Dropdown";
 import { useFeedbackItemsQuery } from "../../queries/feedbackQueries";
 import "../inbox/inbox.css";
 import "./sources.css";
@@ -14,59 +13,6 @@ const sourceMap = {
   email: { key: "EMAIL", label: "Email" },
   x: { key: "X", label: "X/Twitter" },
   forum: { key: "FORUM", label: "Community Forums" },
-};
-
-const SourceFilterBar = ({ sourceKey }) => {
-  const filters = {
-    SUPPORT: [
-      { label: "Queue", options: ["All", "Enterprise", "SMB"] },
-      { label: "SLA risk", options: ["All", "High", "Medium", "Low"] },
-    ],
-    DISCORD: [
-      { label: "Server", options: ["All", "Cloudflare Devs", "Customer Hub"] },
-      { label: "Channel", options: ["All", "#alerts", "#feedback"] },
-    ],
-    GITHUB: [
-      { label: "Repo", options: ["All", "cloudflare/pm", "cloudflare/edge"] },
-      { label: "Label", options: ["All", "bug", "feature", "triage"] },
-    ],
-    EMAIL: [
-      { label: "Mailbox", options: ["All", "support@", "feedback@"] },
-      { label: "Domain", options: ["All", "example.com", "startup.io"] },
-    ],
-    X: [
-      { label: "Mentions", options: ["All", "Direct", "Indirect"] },
-      { label: "Followers", options: ["All", "500+", "1000+"] },
-    ],
-    FORUM: [
-      { label: "Category", options: ["All", "Performance", "UX"] },
-      { label: "Upvotes", options: ["All", "10+", "25+"] },
-    ],
-  };
-
-  const items = filters[sourceKey] || [];
-
-  return (
-    <div className="inbox-panel" style={{ marginBottom: 16 }}>
-      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-        <strong>Source filters</strong>
-        {items.map((filter) => (
-          <label key={filter.label} style={{ display: "grid", gap: 6 }}>
-            <span style={{ fontSize: 12, color: "var(--color-white-muted)" }}>
-              {filter.label}
-            </span>
-            <Dropdown defaultValue={filter.options[0]}>
-              {filter.options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </Dropdown>
-          </label>
-        ))}
-      </div>
-    </div>
-  );
 };
 
 export const SourcesPage = () => {
@@ -104,7 +50,6 @@ export const SourcesPage = () => {
 
   return (
     <div>
-      <SourceFilterBar sourceKey={sourceInfo.key} />
       <div className="sources-grid">
         <Card className="sources-card">
           <strong>{sourceInfo.label} overview</strong>

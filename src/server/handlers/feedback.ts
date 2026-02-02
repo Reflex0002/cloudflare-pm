@@ -49,6 +49,13 @@ export const patchFeedbackHandler = async (c: Context<{ Bindings: Env }>) => {
     tags: body.tags,
   });
 
+  // Clear both item cache and all query caches
   await c.env.CACHE.delete(cacheKeys.item(id));
+  
+  // Clear all query caches by listing and deleting keys that start with "query:"
+  const cacheList = await c.env.CACHE.list({ prefix: "query:" });
+  const deletePromises = cacheList.keys.map(key => c.env.CACHE.delete(key.name));
+  await Promise.all(deletePromises);
+  
   return c.json({ ok: true });
 };

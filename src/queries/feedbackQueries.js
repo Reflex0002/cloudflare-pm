@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../api/client";
 
 export const useFeedbackItemsQuery = (filters = {}) =>
@@ -38,3 +38,21 @@ export const useSearchQuery = (query) =>
     queryFn: async () => api.search(query),
     enabled: Boolean(query),
   });
+
+export const useTriageSpeedQuery = () =>
+  useQuery({
+    queryKey: ["feedback", "triageSpeed"],
+    queryFn: async () => api.getTriageSpeed(),
+  });
+
+export const useUpdateFeedbackMutation = (id) => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (payload) => api.updateFeedback(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["feedback", "detail", id] });
+      queryClient.invalidateQueries({ queryKey: ["feedback"] });
+    },
+  });
+};

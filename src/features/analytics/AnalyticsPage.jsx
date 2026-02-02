@@ -1,47 +1,94 @@
+import { useState } from "react";
 import { Card } from "../../components/ui/Card";
-import { mockFeedback } from "../../data/mockFeedback";
+import { Button } from "../../components/ui/Button";
 import { SourceMixChart } from "./SourceMixChart";
 import { TopThemesCard } from "./TopThemesCard";
+import { useTriageSpeedQuery } from "../../queries/feedbackQueries";
+import { useAnalyticsChatMutation } from "../../queries/aiQueries";
 import "./analytics.css";
 
-const estimateTriageHours = (item) => {
-  switch (item.priority) {
-    case "P0":
-      return 4;
-    case "P1":
-      return 8;
-    case "P2":
-      return 16;
-    default:
-      return 30;
-  }
-};
-
 export const AnalyticsPage = () => {
-  const triagedItems = mockFeedback.filter((item) => item.status !== "NEW");
-  const triageHours = triagedItems.map(estimateTriageHours);
-  const avgTriage =
-    triageHours.length > 0
-      ? Math.round(triageHours.reduce((sum, value) => sum + value, 0) / triageHours.length)
-      : 0;
-  const under24 =
-    triageHours.length > 0
-      ? Math.round((triageHours.filter((hours) => hours <= 24).length / triageHours.length) * 100)
-      : 0;
+  const { data: triageData } = useTriageSpeedQuery();
+  const avgTriage = triageData?.avgHours ?? 0;
+  const under24 = triageData?.under24Percent ?? 0;
+
+  const [messages, setMessages] = useState([
+    { role: "assistant", text: "Ask me about trends or anomalies." },
+    { role: "assistant", text: "Try: \"What are the top sources this week?\"" },
+  ]);
+  const [input, setInput] = useState("");
+  const chatMutation = useAnalyticsChatMutation();
+
+  const handleSend = async () => {
+    if (!input.trim() || chatMutation.isPending) return;
+
+    const userMessage = input.trim();
+    setInput("");
+    
+    // Add user message
+    setMessages((prev) => [...prev, { role: "user", text: userMessage }]);
+
+    try {
+      const response = await chatMutation.mutateAsync(userMessage);
+      // Add assistant response
+      setMessages((prev) => [...prev, { role: "assistant", text: response.response }]);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", text: "Sorry, I couldn't process that request." },
+      ]);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
 
   return (
     <div className="analytics-layout">
       <Card className="chatbot-panel">
         <strong>Analytics Assistant</strong>
         <div className="chatbot-messages">
-          <div className="chatbot-bubble">Ask me about trends or anomalies.</div>
-          <div className="chatbot-bubble">Try: "What are the top sources this week?"</div>
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className="chatbot-bubble"
+              style={{
+                alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
+                background: msg.role === "user" ? "var(--color-blue)" : "var(--color-gray-800)",
+                maxWidth: "80%",
+              }}
+            >
+              {msg.text}
+            </div>
+          ))}
         </div>
         <div className="chatbot-input">
           <label style={{ color: "var(--color-white-muted)", fontSize: 12 }}>
             Chat prompt
           </label>
-          <input type="text" placeholder="Type your question..." />
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              type="text"
+              placeholder="Type your question..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={chatMutation.isPending}
+              style={{ flex: 1 }}
+            />
+            <Button
+              variant="primary"
+              onClick={handleSend}
+              disabled={!input.trim() || chatMutation.isPending}
+              style={{ padding: "6px 12px", fontSize: 13 }}
+            >
+              {chatMutation.isPending ? "..." : "Send"}
+            </Button>
+          </div>
         </div>
       </Card>
 

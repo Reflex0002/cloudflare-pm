@@ -1,10 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { execSync } from "node:child_process";
-import { mockFeedback } from "../../src/data/mockFeedback.js";
-import { mockUsers } from "../../src/data/mockUsers.js";
-import { mockTags } from "../../src/data/mockTags.js";
+import { mockFeedback } from "../src/data/mockFeedback.js";
+import { mockUsers } from "../src/data/mockUsers.js";
+import { mockTags } from "../src/data/mockTags.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.join(__dirname, "seed.sql");
@@ -78,15 +77,4 @@ for (const item of mockFeedback) {
 
 fs.writeFileSync(outputPath, sql.join("\n"), "utf8");
 
-if (process.env.RUN_WRANGLER === "true") {
-  try {
-    execSync(`wrangler d1 execute feedback-tracker-db --file ${outputPath}`, {
-      stdio: "inherit",
-    });
-  } catch (error) {
-    console.error("Failed to run wrangler d1 execute. Seed file created at:", outputPath);
-    process.exitCode = 1;
-  }
-} else {
-  console.log("Seed file created at:", outputPath);
-}
+console.log("Seed file created at:", outputPath);

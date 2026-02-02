@@ -1,14 +1,22 @@
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { clsx } from "../../utils/clsx";
 import logo from "../../assets/logo.svg";
-import { SearchInput } from "../ui/SearchInput";
-import { useSearchQuery } from "../../queries/feedbackQueries";
+import { Button } from "../ui/Button";
+import { useIndexAllFeedbackMutation } from "../../queries/aiQueries";
 
-export const TopNavBar = () => {
-  const [query, setQuery] = useState("");
-  const { data } = useSearchQuery(query.trim());
-  const results = data?.items ?? [];
+export const TopNavBar = ({ onAISearchClick }) => {
+  const indexAllMutation = useIndexAllFeedbackMutation();
+
+  const handleIndexAll = async () => {
+    if (confirm("Index all feedback for AI search? This may take a moment.")) {
+      try {
+        await indexAllMutation.mutateAsync();
+        alert("Successfully indexed all feedback!");
+      } catch (error) {
+        alert("Already Indexed on current database");
+      }
+    }
+  };
 
   return (
     <header className="top-nav">
@@ -46,28 +54,25 @@ export const TopNavBar = () => {
 
       <div className="top-nav__actions">
         <div className="top-nav__search">
-          <SearchInput
-            placeholder="Search feedback"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          {query.trim().length > 1 && (
-            <div className="top-nav__search-results" role="listbox">
-              {results.length ? (
-                results.slice(0, 6).map((item) => (
-                  <div key={item.id} className="top-nav__search-item" role="option">
-                    <div className="top-nav__search-title">{item.title}</div>
-                    <div className="top-nav__search-meta">
-                      {item.sourceLabel} • {item.status}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="top-nav__search-empty">No results yet</div>
-              )}
-            </div>
-          )}
+          <Button
+            variant="primary"
+            onClick={onAISearchClick}
+            style={{ fontSize: 13, padding: "6px 12px", width: "100%" }}
+          >
+            AI Search
+          </Button>
         </div>
+        <Button
+          variant="ghost"
+          onClick={handleIndexAll}
+          disabled={indexAllMutation.isPending}
+          style={{ fontSize: 13, padding: "6px 12px", display: "flex", alignItems: "center", gap: 6 }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+          </svg>
+          {indexAllMutation.isPending ? "Indexing..." : "Index All"}
+        </Button>
         <div className="top-nav__avatar" aria-label="User menu" />
       </div>
     </header>

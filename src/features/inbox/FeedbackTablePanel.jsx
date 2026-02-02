@@ -62,7 +62,6 @@ export const FeedbackTablePanel = ({ selectedId, onSelect }) => {
             <option value="status">Status</option>
             <option value="sourceType">Source</option>
           </Dropdown>
-          <Button variant="ghost">Bulk actions</Button>
         </div>
       </div>
 

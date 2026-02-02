@@ -1,4 +1,5 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useSearchParams, useNavigate } from "react-router-dom";
 import "./components/ui/ui.css";
 import "./components/layout/layout.css";
 import { AppShell } from "./components/layout/AppShell";
@@ -6,11 +7,29 @@ import { InboxPage } from "./features/inbox/InboxPage";
 import { SourcesPage } from "./features/sources/SourcesPage";
 import { AnalyticsPage } from "./features/analytics/AnalyticsPage";
 import { SettingsPage } from "./features/settings/SettingsPage";
+import { AISearchModal } from "./components/ui/AISearchModal";
 
-export default function App() {
+function AppContent() {
+  const [isAISearchOpen, setIsAISearchOpen] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleSelectFeedback = (id) => {
+    navigate("/inbox");
+    setTimeout(() => {
+      const nextParams = new URLSearchParams(searchParams);
+      if (id) {
+        nextParams.set("selected", id);
+      } else {
+        nextParams.delete("selected");
+      }
+      setSearchParams(nextParams);
+    }, 0);
+  };
+
   return (
-    <BrowserRouter>
-      <AppShell>
+    <>
+      <AppShell onAISearchClick={() => setIsAISearchOpen(true)}>
         <Routes>
           <Route path="/" element={<Navigate to="/inbox" replace />} />
           <Route path="/inbox" element={<InboxPage />} />
@@ -19,6 +38,20 @@ export default function App() {
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </AppShell>
+      
+      <AISearchModal
+        isOpen={isAISearchOpen}
+        onClose={() => setIsAISearchOpen(false)}
+        onSelectFeedback={handleSelectFeedback}
+      />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

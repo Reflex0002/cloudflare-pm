@@ -35,7 +35,10 @@ export const InboxPage = () => {
       {selectedId && <div className="detail-overlay" onClick={() => handleSelect(null)} />}
       <div className="inbox-layout">
         <InboxSidebar />
-        <FeedbackTablePanel selectedId={selectedId} onSelect={handleSelect} />
+        <FeedbackTablePanel 
+          selectedId={selectedId} 
+          onSelect={handleSelect}
+        />
         <FeedbackDetailPanel selectedId={selectedId} />
       </div>
     </>

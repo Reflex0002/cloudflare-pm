@@ -1,9 +1,26 @@
 name = "feedback-tracker"
+main = "src/worker.ts"
 compatibility_date = "2026-02-01"
-pages_build_output_dir = "./dist"
+assets = { directory = "./dist", binding = "ASSETS" }
 
-[env.production]
-vars = { VITE_API_URL = "https://feedback-tracker-api.<subdomain>.workers.dev" }
+[[d1_databases]]
+binding = "DB"
+database_name = "feedback-tracker-db-v2"
+database_id = "baa9f9c9-314c-420d-be5e-86956b54d265"
 
-[env.preview]
-vars = { VITE_API_URL = "https://feedback-tracker-api-preview.<subdomain>.workers.dev" }
+[[kv_namespaces]]
+binding = "CACHE"
+id = "66823948eeac44a48621707ec8ed0b77"
+
+[[r2_buckets]]
+binding = "ATTACHMENTS"
+bucket_name = "feedback-attachments"
+
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "feedback-search"
+remote = true
+
+[ai]
+binding = "AI"
+remote = true
